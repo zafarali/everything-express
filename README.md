@@ -1,4 +1,4 @@
-everything-express
+Everything Express
 ==================
 
-Repo containing all the code used to learn ExpressJS on Node.JS
+Much like my previous repository [learning-angular](https://github.com/zafarali/learning-angular) this repository will contain all the code (annotated ofcourse) to help me (and hopefully you) learn Express
