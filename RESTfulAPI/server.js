@@ -89,6 +89,31 @@ router.route('/friends/:parameter')
 					response.json(data);
 				});
 			})
+			//the following code allows us to update our friends.
+			.put(function (request, response) {
+				Friend.findById(request.params.parameter, function (error, matchedFriend) {
+					if(error){
+						response.json({
+							success: false,
+							message: 'Error occured',
+							error: error
+						});
+					}
+					//here we reassign our friends name
+					matchedFriend.name = request.body.name;
+
+					matchedFriend.save(function (error) {
+						if(error){
+							response.json({
+								success: false,
+								message: 'Error occured',
+								error: error
+							});
+						}
+						response.json({message: 'Friend name changed', success: true});
+					});
+				});
+			})
 
 /* ROUTE REGISTRATION
 Here we tell express to prefix the routes defined using 'router'

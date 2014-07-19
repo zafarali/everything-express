@@ -139,3 +139,9 @@ Listing friends is pretty simple as well, we call the `Friend.find()` and pass i
 ### One Friend at a Time
 Say we only wanted to get one friend? We could use `Friend.findById('long-id-here', callback)` and give it the ID that MongoDB assigns to every object, but assume we didn't know this and wanted to access by name. We could use `Friend.findOne({condition:requirement}, callback)` to handle it. This makes sense if we want to just access user data without the ID. We will use `findById` in a later example.
 All we need to do is define an object which will be used to do the matching process: `{name: request.params.parameter}`. Look into the server.js file to see how it is done.
+
+### Changing names
+What if one of our friends changed their name? We want to change their name on the database as well right? Lets use the HTTP Verb `PUT` to update one of our friends. Here we define an 'id' just for 'security purposes' albeit this is not any safer than before but we can demonstrate another method for matching data to our database.  
+Here we use `Friend.findById(mongodbidhere, callback)` to match and update a friend. Check out the code in server.js to see how its done, we return a matched friend, whos properties we update and then call the `save()` method on it.  
+We can test it with POSTman, first do a GET to a friend using his/her name and copy his/her id. Now do the PUT call using that Id and don't forget to specify the values to update! You should see the response message as successful.
+
