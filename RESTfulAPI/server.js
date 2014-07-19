@@ -72,6 +72,24 @@ router.route('/friends')
 				});
 			});
 
+//since we are going be using different parameters, lets give this a generic name
+//of parameter
+router.route('/friends/:parameter')
+			.get(function (request, response) {
+				Friend.findOne({
+					'name': request.params.parameter
+				}, function (error, data) {
+					if(error){
+						response.json({
+							success: false,
+							message: 'Error occured',
+							error: error
+						});
+					}
+					response.json(data);
+				});
+			})
+
 /* ROUTE REGISTRATION
 Here we tell express to prefix the routes defined using 'router'
 with /api */

@@ -93,7 +93,7 @@ Route | Verb | Function
 ---| --- | ---
 /api/friends | `GET` | Retrieve a list of all Friends in the database
 /api/friends | `POST` | Create a new Friend
-/api/friends/:id | `GET` | Retrieve details of a Friend with *id*
+/api/friends/:name | `GET` | Retrieve details of a Friend whos name is defined.
 /api/friends/:id | `PUT` | Update a Friend with new details
 /api/friends/:id | `DELETE` | Delete a Friend from our database
 
@@ -135,3 +135,7 @@ We can directly access either a query or the body using: `req.query.propertyName
 
 ### Listing Friends
 Listing friends is pretty simple as well, we call the `Friend.find()` and pass it a function that will handle the data callback. Refere to the server.js files to see how we do it.
+
+### One Friend at a Time
+Say we only wanted to get one friend? We could use `Friend.findById('long-id-here', callback)` and give it the ID that MongoDB assigns to every object, but assume we didn't know this and wanted to access by name. We could use `Friend.findOne({condition:requirement}, callback)` to handle it. This makes sense if we want to just access user data without the ID. We will use `findById` in a later example.
+All we need to do is define an object which will be used to do the matching process: `{name: request.params.parameter}`. Look into the server.js file to see how it is done.
