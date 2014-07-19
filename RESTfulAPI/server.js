@@ -15,6 +15,11 @@ app.use(bodyParser());
 //here we get from the environment the PORT to use, or else default to 8080
 var port = process.env.PORT || 8080;
 
+//log the routes we call
+app.use( function (request, response, next) {
+	console.log(request.method + ': ' + request.url);
+	next();
+});
 
 /* ROUTE DECLARATION
 here we create a Router object that we can configure.*/
@@ -25,7 +30,47 @@ router.get('/', function (request, response) {
 	response.json({message:'Welcome to the API!'});
 });
 
+/* ROUTING /friends */
+router.route('/friends')
+			.post(function (request, response) {
+				//create a new friend
+				var friend = new Friend();
 
+				//get data from the body
+				friend.name = request.body.name;
+
+				friend.save(function (error) {
+					//error handling here
+					if(error){
+						response.json({
+							success:false, 
+							message:'Error occurred',
+							error: error
+						});
+					}
+
+					response.json({
+						message:'Friend made!',
+						success: true
+					});
+
+				});
+			})
+			.get(function (request, response) {
+				//finds all friends and passes the data to the call back
+				Friend.find(function (error, data) {
+					//error handling here
+					if(error){
+						response.json({
+							success:false,
+							message:'Error occured',
+							error:error
+						});
+					}
+					//send the data back as JSON
+					response.json(data);
+				});
+			});
 
 /* ROUTE REGISTRATION
 Here we tell express to prefix the routes defined using 'router'

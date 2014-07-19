@@ -85,3 +85,53 @@ The last line exports the model and exposes it to Node.js. This emans that back 
 
 ### Wire it up!
 If your using a local instance of MongoDB, run it on the terminal using `mongod` and you will see that the server is waiting and listening for new connections. `node server.js` our web app and you will see that MongoDB now registers a new connection (if all goes well!)
+
+## API Design
+Creating a good API first requires some planning. What would we like to do? What should we do? How should we design it? Since our aim here is to cover all the basic verbs here is what I've come up with:
+
+Route | Verb | Function
+---| --- | ---
+/api/friends | `GET` | Retrieve a list of all Friends in the database
+/api/friends | `POST` | Create a new Friend
+/api/friends/:id | `GET` | Retrieve details of a Friend with *id*
+/api/friends/:id | `PUT` | Update a Friend with new details
+/api/friends/:id | `DELETE` | Delete a Friend from our database
+
+Thats a lot of stuff to design so lets get started with the coding part of it. **note: I have defined our own middleware for logging the route that was called**
+
+### Making Friends
+Let's first see how we can make a few friends so that we can list them using our API.
+```javascript
+router.route('/friends')
+			.post(function (request, response) {
+				//create a new friend
+				var friend = new Friend();
+				//we set its name to the name attached to the body sent to us.
+				friend.name = request.body.name
+				friend.save(callback);
+			});
+```
+In the callback we handle if there was an error, if there wasn't we send a json response with message and success properties (see main server.js file). Load up POSTman, type in the URL, and select POST. set the key as name and the value as your best friends name. Click Send and we should see the response!
+
+#### `request.body` and `request.param`
+There are many ways to access data sent to us. `request.param(key)` allows us to get the data in any method (query, body or parameter)
+```javascript
+// QUERY
+// ?name=JohnDoe
+req.param('name')
+// => "JohnDoe"
+
+// BODY
+// POST name=JohnDoe
+req.param('name')
+// => "JohnDoe"
+
+// PARAMETER
+// /user/JohnDoe for /user/:name 
+req.param('name')
+// "JohnDoe"
+```
+We can directly access either a query or the body using: `req.query.propertyName` and `req.body.propertyName` respectively. 
+
+### Listing Friends
+Listing friends is pretty simple as well, we call the `Friend.find()` and pass it a function that will handle the data callback. Refere to the server.js files to see how we do it.
