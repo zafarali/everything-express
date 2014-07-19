@@ -12,8 +12,8 @@ You may ask what we are installing so here is the low down:
 So go ahead and `npm install` the above so we can started with the API.
 
 ### Wait... What else do we need?
-Obviously our system should have node.js installed on it. We also need to install MongoDB on our machine. (Make sure you know how to fire it up, i.e. `mongod` on the terminal).  
-In this example we aren't going to be worrying too much about our front-end HTML system. You may ask: 'How do we interact with the API then?' There is an application called POSTman which the blogpost reccomends. I used that and it's quite good.  
+Obviously our system should have node.js installed on it. We also need to install [MongoDB](www.mongodb.org/) on our machine. (Make sure you know how to fire it up, i.e. `mongod` on the terminal). **alternative: we can use [mongolabs](https://mongolab.com) or [mongohq](https://www.mongohq.com/) to host a free sandbox server.  
+In this example we aren't going to be worrying too much about our front-end HTML system. You may ask: 'How do we interact with the API then?' There is an application called [POSTman](http://www.getpostman.com/) which the blogpost reccomends. I used that and it's quite good.  
 
 ## server.js
 Notice how in `package.json` we specified the main to be `server.js`. This means that we have declared that our application can be started up via `server.js`, naturally this is where we should get started!  
@@ -66,3 +66,22 @@ I can only be invoked from /fun/*!
 Someone is having fun!
 GET: /fun/bam
 ```
+Thus you can see in `server.js`, we declared `bodyParser()` first because we would like to use it for all our URLs and is the *most* important. Your most important middleware go on at the top. At the bottom we defined a `rounter` and mounted that to `/api`. We also defined some basic routes to get started (more on this later).
+
+### `app.listen(port)`
+This mounts the express app to nodes inbuilt http server and will begin the app listening at the port given.
+
+  
+Load up the server using `node server.js` and navigate to localhost:port/api in your browser or send it a GET request from Postman. (Select the HTTP verb, type in the URL and click send. You should get a response!)
+
+## MongoDB
+### Accessing our MongoDB Database
+If you have set up a MongoDB database as above, you need to copy the URI to be able to access the database. We use `mongoose` to interface between Node.js and the MongoDB. Add in your URI and `mongoose.connect()` and we are ready to go.  
+
+### Schema
+To be able to store and retrieve data, we need to define a Schema for our data. Let's go ahead and create a Schema in `app/models/FriendSchema.js`
+As you can see in the following example, we first create a new Schema that will hold our data and the Data Type of each. For more data types we can refer to [mongoose documentation](http://mongoosejs.com/docs/guide.html).  
+The last line exports the model and exposes it to Node.js. This emans that back in our `server.js` we can import the model using one line: `var Friend = require('./app/models/FriendSchema');`
+
+### Wire it up!
+If your using a local instance of MongoDB, run it on the terminal using `mongod` and you will see that the server is waiting and listening for new connections. `node server.js` our web app and you will see that MongoDB now registers a new connection (if all goes well!)

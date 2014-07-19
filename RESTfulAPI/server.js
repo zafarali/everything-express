@@ -3,7 +3,13 @@ var express = require('express'),
 		app	= express(), //we create a new express app.
 		bodyParser = require('body-parser');
 
-//here we tell our express app to use bodyParser as a middlewear
+
+/* DATABASE CONNECTION */
+var mongoose = require('mongoose');
+mongoose.connect('mongodb://localhost:27017');
+var Friend = require('./app/models/FriendSchema');
+
+//here we tell our express app to use bodyParser as a middleware
 app.use(bodyParser());
 
 //here we get from the environment the PORT to use, or else default to 8080
