@@ -114,6 +114,23 @@ router.route('/friends/:parameter')
 					});
 				});
 			})
+			.delete(function (request, response) {
+				Friend.remove({
+					_id: request.params.parameter
+				}, function (error) {
+						if(error){
+							response.json({
+								success: false,
+								message: 'Error occured',
+								error: error
+							});
+						}
+						response.json({
+							message: 'Friend was removed',
+							success: true
+						});
+				});
+			});
 
 /* ROUTE REGISTRATION
 Here we tell express to prefix the routes defined using 'router'

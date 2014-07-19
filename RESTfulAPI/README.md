@@ -145,3 +145,12 @@ What if one of our friends changed their name? We want to change their name on t
 Here we use `Friend.findById(mongodbidhere, callback)` to match and update a friend. Check out the code in server.js to see how its done, we return a matched friend, whos properties we update and then call the `save()` method on it.  
 We can test it with POSTman, first do a GET to a friend using his/her name and copy his/her id. Now do the PUT call using that Id and don't forget to specify the values to update! You should see the response message as successful.
 
+### Unfriending
+Now lets look at the final part of our API, deleting a friend.  we use `Friend.remove()` and pass it a condition object: `{_id: condition }` that will be used to match the friend. When found it will be removed and we repond with a message.
+
+## Conclusion
+And there you have it, we have defined a 'CRUD' API which we have set up with minimal pain. A word of warning that this is just for tutorial/demo purposes. We would actually have to do a whole lot of checks to see if we have been authenticated or not and see if we have permssion to make delete/put requests etc.
+
+#### Potential Pitfalls
+##### Nothing appears under the 'name' property!
+I noticed that with POSTman you have to send data as 'x-www-form-urlencoded' and not 'form-data', this might be the issue.
